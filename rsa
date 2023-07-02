@@ -1,48 +1,48 @@
+#!/usr/bin/env bash
+#is a challenge
 check_factor()
 {
-if [ $# -ne 3 ];
-then
-args=("$@")
-count=0
-number2=1
-for a in ${args[*]};
-do
-if [ $count -gt 1 ];
-then
-number2=$(echo $a*$number2 | bc)
-fi
-count=$((count + 1))
-done
+	if [ $# -ne 3 ];
+        then
+                args=("$@")
+                count=0
+                numer2=1
+                for a in ${args[*]};
+                do
+                        if [ $count -gt 1 ];
+                        then
+                                numer2=$(echo $a*$numer2 | bc)
+                        fi
+                        count=$((count + 1))
+                done
+        else
+                numer2=$3
+        fi
 
-else
-number2=$3
+        number1=$2
+        num=$(echo "$1" | tr ':' '=')
 
-fi
+        result=$(echo "if($numer2 > $number1) 1 else 0" | bc)
+	        if ((result == 1)); then
+		        numcp=$number1
+		        number1=$numer2
+		        numer2=$numcp
+                fi
 
-number1=$2
-num=$(echo "$1" | tr ':' '=')
-
-result=$(echo "if($number2 > $number1) 1 else 0" | bc)
-if ((result == 1)); then
-numcp=$number1
-number1=$number2
-number2=$numcp
-fi
-
-echo "$num$number1*$number2"
+        echo "$num$number1*$numer2"
 }
 
 if [ $# -ne 1 ]
 then
-echo 'Usage: rsa <file>'
-exit 1
+        echo 'Usage: rsa <file>'
+        exit 1
 else
 
-while read i
-do
+        while read i
+        do
 
-result=$(factor "$i")
-check_factor $result
+                result=$(factor "$i")
+                check_factor $result
 
-done < "$1"
+        done < "$1"
 fi
